@@ -14,7 +14,7 @@ com molas próprias. O APK de release passa por R8 e remoção de recursos.
   <img src="docs/screenshots/ajustar-painel.png" width="19%" alt="Painel Ajustar, calibrando a grade" />
   <img src="docs/screenshots/base-painel.png" width="19%" alt="Painel Base antes de detectar" />
   <img src="docs/screenshots/base-detectada.png" width="19%" alt="Base 83 detectada com 100% de semelhança" />
-  <img src="docs/screenshots/videos-youtube.png" width="19%" alt="Busca da base 83 no YouTube" />
+  <img src="docs/screenshots/videos-youtube.png" width="14%" alt="Busca da base 83 no YouTube" />
 </p>
 
 ## Como usar
