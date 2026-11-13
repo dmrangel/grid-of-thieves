@@ -66,18 +66,49 @@ jobs:
           name: reports
           path: app/build/reports/
 
+  # Publica um Release quando o versionName do app/build.gradle.kts ganha uma
+  # tag nova. A tag é criada aqui pelo GITHUB_TOKEN porque sessões de nuvem do
+  # Claude Code só podem empurrar branches; basta subir o bump de versão na main.
   release:
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
     needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Read version
+        id: version
+        run: |
+          name=$(sed -n 's/^ *versionName = "\(.*\)"/\1/p' app/build.gradle.kts)
+          tag="v$name"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          if [ "$GITHUB_REF" = "refs/heads/main" ] && git rev-parse -q --verify "refs/tags/$tag" >/dev/null; then
+            echo "Tag $tag já existe; nada a publicar."
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - uses: actions/download-artifact@v8
+        if: steps.version.outputs.publish == 'true'
         with:
           name: apk
 
+      - name: Name APKs after the tag
+        if: steps.version.outputs.publish == 'true' && github.ref == 'refs/heads/main'
+        run: |
+          tag="${{ steps.version.outputs.tag }}"
+          mv grid-of-thieves-main.apk "grid-of-thieves-$tag.apk"
+          mv grid-of-thieves-main-debug.apk "grid-of-thieves-$tag-debug.apk"
+
       - uses: softprops/action-gh-release@v3
+        if: steps.version.outputs.publish == 'true'
         with:
+          tag_name: ${{ github.ref == 'refs/heads/main' && steps.version.outputs.tag || github.ref_name }}
+          target_commitish: ${{ github.sha }}
           files: grid-of-thieves-*.apk
           generate_release_notes: true

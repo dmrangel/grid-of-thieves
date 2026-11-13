@@ -68,6 +68,9 @@ Abrir o ícone de novo com o overlay ativo só expande o painel.
   (`app/src/test/resources/bases/<número>-<aparelho>.png`, precisa do Pillow). Todo print
   novo com número conhecido deve virar fixture; o teste exige acerto com margem.
 - `tools/gen_icons.py` gera os ícones Lucide em `res/drawable/`.
+- **Release**: aumente `versionCode` e `versionName` em `app/build.gradle.kts` e suba na
+  `main`. O CI cria a tag `v<versionName>` e publica o Release com o APK. Não é preciso
+  empurrar tag, o que também funciona a partir de sessões de nuvem do Claude Code.
 - Atualizou a tabela de bases no chrollo? Copie o `src/kot/bases.json` de lá para
   `app/src/main/assets/bases.json`.
 
