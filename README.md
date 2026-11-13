@@ -9,6 +9,14 @@ diz qual base da tabela 6.9 está aberta.
 Sem bibliotecas: só o framework do Android, views desenhadas em código e animações
 com molas próprias. O APK de release passa por R8 e remoção de recursos.
 
+<p align="center">
+  <img src="docs/screenshots/edit-mode.png" width="19%" alt="Grade sobre a base no modo de edição do jogo" />
+  <img src="docs/screenshots/ajustar-painel.png" width="19%" alt="Painel Ajustar, calibrando a grade" />
+  <img src="docs/screenshots/base-painel.png" width="19%" alt="Painel Base antes de detectar" />
+  <img src="docs/screenshots/base-detectada.png" width="19%" alt="Base 83 detectada com 100% de semelhança" />
+  <img src="docs/screenshots/videos-youtube.png" width="19%" alt="Busca da base 83 no YouTube" />
+</p>
+
 ## Como usar
 
 1. Instale o APK e abra **Grid of Thieves**. Na primeira vez o Android pede a permissão
@@ -52,7 +60,7 @@ Abrir o ícone de novo com o overlay ativo só expande o painel.
 ## Desenvolvimento
 
 ```bash
-./gradlew assembleRelease        # APK leve (R8), assinado com a chave de debug
+./gradlew assembleRelease        # APK leve (R8); chave de keystore.properties, ou debug se não existir
 ./gradlew testDebugUnitTest      # testes do BaseMatcher com prints reais
 ```
 
@@ -63,4 +71,7 @@ Abrir o ícone de novo com o overlay ativo só expande o painel.
 - Atualizou a tabela de bases no chrollo? Copie o `src/kot/bases.json` de lá para
   `app/src/main/assets/bases.json`.
 
-Licenças de terceiros em [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+## Licença
+
+Código sob [MIT](LICENSE). A fonte, os ícones e a tabela de bases têm licenças
+próprias (OFL 1.1, ISC); veja [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

@@ -1,5 +1,18 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
+}
+
+// Assinatura de release lida de keystore.properties (git-ignored), se existir:
+//   storeFile=/caminho/para/release.jks
+//   storePassword=...
+//   keyAlias=...
+//   keyPassword=...
+// Sem ele, o release cai pra chave de debug e continua instalável.
+val keystoreProperties = Properties().apply {
+    val file = rootProject.file("keystore.properties")
+    if (file.exists()) file.inputStream().use { load(it) }
 }
 
 android {
@@ -14,14 +27,24 @@ android {
         versionName = "1.0"
     }
 
+    signingConfigs {
+        if (keystoreProperties.isNotEmpty()) {
+            create("release") {
+                storeFile = rootProject.file(keystoreProperties.getProperty("storeFile"))
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
             // R8 + remoção de recursos: o APK de release fica só com o que o app usa.
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
-            // App pessoal, instalado direto: assina com a chave de debug para continuar instalável.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
         }
     }
 

@@ -45,9 +45,10 @@ captures/
 .idea/modules.xml
 .idea/workspace.xml
 
-# Keystore files
+# Keystore files and release signing config
 *.jks
 *.keystore
+keystore.properties
 
 # Google Services (Firebase)
 google-services.json
